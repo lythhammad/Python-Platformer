@@ -1,7 +1,11 @@
 {
     "cSpell.words": [
+<<<<<<< HEAD
         "blit",
         "pygame",
         "topleft"
+=======
+        "KEYDOWN"
+>>>>>>> 7528a2c7a5b7cba577e8d246da3b7781c6ba4d1f
     ]
 }
