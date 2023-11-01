@@ -34,7 +34,7 @@ def draw(window, background, bg_image, player, objects, offset_x):
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))
-    _, _, width, height, = image.get_rect()
+    _, _, width, height = image.get_rect()
     tiles = []
 
     for i in range(WIDTH // width + 1):
@@ -43,7 +43,6 @@ def get_background(name):
             tiles.append(pos)
 
     return tiles, image
-
 
 def flip(sprites):
     return[pygame.transform.flip(sprite, True, False) for sprite in sprites]
@@ -96,9 +95,11 @@ def collide(player, objects, dx):
         if pygame.sprite.collide_mask(player, obj):
             collided_object = obj
             break
+
     player.move(-dx, 0)
     player.update()
     return collided_object
+
 
 def handle_move(player, objects):
     keys = pygame.key.get_pressed()
@@ -114,6 +115,7 @@ def handle_move(player, objects):
 
     vertical_collide = handle_vertical_collision(player, objects, player.y_vel)
     to_check = [collide_left, collide_right, *vertical_collide]
+
     for obj in to_check:
         if obj and obj.name == "fire":
             player.make_hit()

@@ -4,7 +4,7 @@ import math
 import pygame
 from os import listdir
 from os.path import isfile, join
-from objects import *
+from objects import * 
 from game_logic import *
 
 
@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = "left"
         self.animation_count = 0
         self.fall_count = 0
+        self.jump_count = 0
         self.hit = False
         self.hit_count = 0
 
@@ -33,13 +34,12 @@ class Player(pygame.sprite.Sprite):
         if self.jump_count == 1:
             self.fall_count = 0
 
-    def make_hit(self):
-        self.hit = True
-        self.hit_count = 0
-
     def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy
+
+    def make_hit(self):
+        self.hit = True
 
     def move_left(self, vel):
         self.x_vel = -vel
@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.hit:
             self.hit_count += 1
-        if self.hit_count > fps:
+        if self.hit_count > fps * 2:
             self.hit = False
             self.hit_count = 0
 
@@ -86,10 +86,7 @@ class Player(pygame.sprite.Sprite):
                 sprite_sheet = "double_jump"
         elif self.y_vel > self.GRAVITY * 2:
             sprite_sheet = "fall"
-        elif self.x_vel > 0:
-            sprite_sheet = "run"
-
-        if self.x_vel != 0:
+        elif self.x_vel != 0:
             sprite_sheet = "run"
 
         sprite_sheet_name = sprite_sheet + "_" + self.direction
@@ -105,4 +102,7 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.sprite)
 
     def draw(self, win, offset_x):
+        red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        red_surface.fill((255, 0, 0, 128))
+        win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
         win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
