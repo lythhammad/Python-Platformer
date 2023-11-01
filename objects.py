@@ -4,7 +4,7 @@ import math
 import pygame
 from os import listdir
 from os.path import isfile, join
-from player import *
+from player import * 
 from game_logic import *
 
 
@@ -19,7 +19,6 @@ def draw(window, background, bg_image, player, objects, offset_x):
 
     pygame.display.update()
 
-
 def get_block(size):
     path = join("assets", "Terrain", "Terrain.png", )
     image = pygame.image.load(path).convert_alpha()
@@ -28,13 +27,21 @@ def get_block(size):
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
 
-def get_jump_pad(size):
+def get_gold_pad(size):
     path = join("assets", "Terrain", "Terrain.png", )
     image = pygame.image.load(path).convert_alpha()
     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
-    rect = pygame.Rect(280, -40, size, size)
+    rect = pygame.Rect(272, 0, size, size)
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
+
+# def get_wood_pad(size):
+#     path = join("assets", "Terrain", "Terrain.png", )
+#     image = pygame.image.load(path).convert_alpha()
+#     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+#     rect = pygame.Rect(280, -40, size, size)
+#     surface.blit(image, (0, 0), rect)
+#     return pygame.transform.scale2x(surface)
 
 def get_wood_border(size):
     path = join("assets", "Terrain", "Terrain.png", )
@@ -64,11 +71,30 @@ class Block(Object):
         self.image.blit(block, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
-class JumpPad(Object):
+    def draw(self, win, offset_x):
+        red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        red_surface.fill((255, 0, 0, 128))  # Fill with semi-transparent red color
+        win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
+        win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
+
+class GoldPad(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, size, 10)
+        goldPad = get_gold_pad(size)
+        self.image.blit(goldPad, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def draw(self, win, offset_x):
+        red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        red_surface.fill((255, 0, 0, 128))  # Fill with semi-transparent red color
+        win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
+        win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
+
+class WoodPad(Object):
     def __init__(self, x, y, size):
         super().__init__(x, y, size, size)
-        jumpPad = get_jump_pad(size)
-        self.image.blit(jumpPad, (0, 0))
+        woodPad = get_wood_pad(size)
+        self.image.blit(woodPad, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
 class Fire(Object):

@@ -1,8 +1,8 @@
 import pygame
 from player import *
-from objects import *
+from objects import * 
 from game_logic import *
-from map import create_map
+from map import create_map 
 
 
 def main(window):

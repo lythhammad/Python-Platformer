@@ -1,4 +1,4 @@
-from objects import Block, JumpPad, Fire
+from objects import Block, GoldPad, Fire
 
 def create_map(WIDTH, HEIGHT):
     block_size = 96
@@ -12,12 +12,7 @@ def create_map(WIDTH, HEIGHT):
     objects = [
         *floor,
         Block(block_size * 4, HEIGHT - block_size * 2, block_size),
-        Block(block_size * 5, HEIGHT - block_size * 2, block_size),
-        Block(block_size * 5, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 6, HEIGHT - block_size * 2, block_size),
-        Block(block_size * 6, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 2, block_size),
-        JumpPad(block_size * 9, HEIGHT - block_size * 3, block_size),
+        GoldPad(block_size * 9, HEIGHT - block_size * 3, block_size),
         fire,
     ]
 
