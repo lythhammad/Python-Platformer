@@ -1,4 +1,4 @@
-from objects import Block, GoldPad, Fire
+from objects import Fire, Block, GrassBlock, IceBlock, GoldPad, WoodPad, XGoldBorder, YGoldBorder, SwampMiniBlock
 
 def create_map(WIDTH, HEIGHT):
     block_size = 96
@@ -11,8 +11,19 @@ def create_map(WIDTH, HEIGHT):
 
     objects = [
         *floor,
-        Block(block_size * 4, HEIGHT - block_size * 2, block_size),
-        GoldPad(block_size * 9, HEIGHT - block_size * 3, block_size),
+
+        GoldPad(block_size * 6, HEIGHT - block_size * 2, block_size),
+        WoodPad(block_size * 7, HEIGHT - block_size * 2, block_size),
+
+        Block(block_size * 8, HEIGHT - block_size * 3, block_size),
+        GrassBlock(block_size * 9, HEIGHT - block_size * 3, block_size),
+
+        IceBlock(block_size * 11, HEIGHT - block_size * 2, block_size),
+        SwampMiniBlock(block_size * 12, HEIGHT - block_size * 1.62, block_size),
+
+        XGoldBorder(block_size * 14, HEIGHT - block_size * 2, block_size),
+        YGoldBorder(block_size * 15.5, HEIGHT - block_size * 2, block_size),
+        
         fire,
     ]
 

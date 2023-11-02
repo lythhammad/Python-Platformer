@@ -1,6 +1,3 @@
-import os
-import random
-import math
 import pygame
 from os import listdir
 from os.path import isfile, join
@@ -12,7 +9,6 @@ pygame.init()
 
 pygame.display.set_caption("platform")
 
-WIDTH, HEIGHT = 100, 800
 FPS = 60
 PLAYER_VEL = 5
 
@@ -30,7 +26,6 @@ def draw(window, background, bg_image, player, objects, offset_x):
     player.draw(window, offset_x)
 
     pygame.display.update()
-
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))
@@ -71,7 +66,6 @@ def load_sprite_sheets(dir1, dir2, width, height, direction=False):
 
     return all_sprites
 
-
 def handle_vertical_collision(player, objects, dy):
     collided_objects = []
     for obj in objects:
@@ -99,7 +93,6 @@ def collide(player, objects, dx):
     player.move(-dx, 0)
     player.update()
     return collided_object
-
 
 def handle_move(player, objects):
     keys = pygame.key.get_pressed()

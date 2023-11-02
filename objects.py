@@ -1,6 +1,3 @@
-import os
-import random
-import math
 import pygame
 from os import listdir
 from os.path import isfile, join
@@ -27,6 +24,30 @@ def get_block(size):
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
 
+def get_grass_block(size):
+    path = join("assets", "Terrain", "Terrain.png", )
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(96, 0, size, size)
+    surface.blit(image, (0, 0), rect)
+    return pygame.transform.scale2x(surface)
+
+def get_ice_block(size):
+    path = join("assets", "Traps", "Sand Mud Ice", "Sand Mud Ice (16x6).png", )
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(128, 0, size, size)
+    surface.blit(image, (0, 0), rect)
+    return pygame.transform.scale2x(surface)
+
+def get_swamp_mini_block(size):
+    path = join("assets", "Traps", "Sand Mud Ice", "Sand Mud Ice (16x6).png", )
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(65, 48, size, size)
+    surface.blit(image, (0, 0), rect)
+    return pygame.transform.scale2x(surface)
+
 def get_gold_pad(size):
     path = join("assets", "Terrain", "Terrain.png", )
     image = pygame.image.load(path).convert_alpha()
@@ -35,21 +56,30 @@ def get_gold_pad(size):
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
 
-# def get_wood_pad(size):
-#     path = join("assets", "Terrain", "Terrain.png", )
-#     image = pygame.image.load(path).convert_alpha()
-#     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
-#     rect = pygame.Rect(280, -40, size, size)
-#     surface.blit(image, (0, 0), rect)
-#     return pygame.transform.scale2x(surface)
-
-def get_wood_border(size):
+def get_wood_pad(size):
     path = join("assets", "Terrain", "Terrain.png", )
     image = pygame.image.load(path).convert_alpha()
     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
-    rect = pygame.Rect(280, -40, size, size)
+    rect = pygame.Rect(272, 16, size, size)
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
+
+def get_gold_x_border(size):
+    path = join("assets", "Terrain", "Terrain.png", )
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(272, 128, size, size)
+    surface.blit(image, (0, 0), rect)
+    return pygame.transform.scale2x(surface)
+
+def get_gold_y_border(size):
+    path = join("assets", "Terrain", "Terrain.png", )
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(320, 128, size, size)
+    surface.blit(image, (0, 0), rect)
+    return pygame.transform.scale2x(surface)
+
 
 
 class Object(pygame.sprite.Sprite):
@@ -71,12 +101,27 @@ class Block(Object):
         self.image.blit(block, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
-    def draw(self, win, offset_x):
-        red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        red_surface.fill((255, 0, 0, 128))  # Fill with semi-transparent red color
-        win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
-        win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
+class GrassBlock(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, size, size)
+        block = get_grass_block(size)
+        self.image.blit(block, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
 
+class IceBlock(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, size, size)
+        block = get_ice_block(size)
+        self.image.blit(block, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
+    
+class SwampMiniBlock(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, 60, 60)
+        block = get_swamp_mini_block(size)
+        self.image.blit(block, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
+    
 class GoldPad(Object):
     def __init__(self, x, y, size):
         super().__init__(x, y, size, 10)
@@ -84,19 +129,27 @@ class GoldPad(Object):
         self.image.blit(goldPad, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
-    def draw(self, win, offset_x):
-        red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        red_surface.fill((255, 0, 0, 128))  # Fill with semi-transparent red color
-        win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
-        win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
-
 class WoodPad(Object):
     def __init__(self, x, y, size):
-        super().__init__(x, y, size, size)
+        super().__init__(x, y, size, 10)
         woodPad = get_wood_pad(size)
         self.image.blit(woodPad, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
+class XGoldBorder(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, size, 32)
+        woodPad = get_gold_x_border(size)
+        self.image.blit(woodPad, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
+
+class YGoldBorder(Object):
+    def __init__(self, x, y, size):
+        super().__init__(x, y, 32, 97)
+        woodPad = get_gold_y_border(size)
+        self.image.blit(woodPad, (0, 0))
+        self.mask = pygame.mask.from_surface(self.image)
+        
 class Fire(Object):
     ANIMATION_DELAY = 3
 
@@ -126,3 +179,10 @@ class Fire(Object):
 
         if self.animation_count // self.ANIMATION_DELAY > len(sprites):
             self.animation_count = 0
+
+
+# def draw(self, win, offset_x):
+#     win.blit(self.image, (self.rect.x - offset_x, self.rect.y))
+#     red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+#     red_surface.fill((255, 0, 0, 128))
+#     win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))

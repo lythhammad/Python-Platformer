@@ -1,15 +1,9 @@
-import os
-import random
-import math
 import pygame
-from os import listdir
-from os.path import isfile, join
 from objects import * 
 from game_logic import *
 
 
 class Player(pygame.sprite.Sprite):
-    COLOR = (255, 0, 0)
     GRAVITY = 1
     SPRITES = load_sprite_sheets("MainCharacters", "MaskDude", 32, 32, True)
     ANIMATION_DELAY = 3
@@ -102,7 +96,7 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.sprite)
 
     def draw(self, win, offset_x):
+        win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
         red_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
         red_surface.fill((255, 0, 0, 128))
         win.blit(red_surface, (self.rect.x - offset_x, self.rect.y))
-        win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))

@@ -9,9 +9,7 @@ def main(window):
     clock = pygame.time.Clock()
     background, bg_image = get_background("Blue.png")
 
-    block_size = 96
-
-    player = Player(100, 500, 50, 50)
+    player = Player(500, 600, 50, 50)
     objects, fire = create_map(WIDTH, HEIGHT)
 
     offset_x = 0
